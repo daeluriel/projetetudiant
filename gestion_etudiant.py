@@ -1,5 +1,5 @@
 
-
+#j'ai juste ajouter ce commentaire histoire de faire un nouveau commit
 # Définir la structure de données pour un étudiant
 class Etudiant:
  def __init__(self, matricule, nom, prenom, age, filiere, niveau, cotisations):
@@ -33,7 +33,7 @@ def ajouter():
     saisir()
 
 
-# Modifier les données d'un étudiant existant dans le fichier
+# Modifier les données d'un étudiant existant dans le fichier connaissant son matricules
 def modifier(matricule):
      with open("etudiants.txt", "r") as file:
         lignes = file.readlines()
