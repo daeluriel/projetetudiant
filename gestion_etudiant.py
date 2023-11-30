@@ -18,19 +18,40 @@ def saisir():
          matricule = input("Matricule : ")
          nom = input("Nom : ")
          prenom = input("Prenom : ")
-         age = input("Age : ")
+         try:
+             
+            age = int(input("Age : "))
+         except ValueError:
+             print("Veuillez entrer un nombre entier pour l'age.")
+             return
+            
          filiere = input("Filiere : ")
          niveau = input("Niveau : ")
-         cotisations = [float(input(f"Cotisation {i + 1} : ")) for i in range(5)]
-
+         cotisations = [float(input(f"Cotisation {i + 1} : ")) for i in range(5) if i != 0 or sum(cotisations) != 0]
+         
          etudiant = Etudiant(matricule, nom, prenom, age, filiere, niveau, cotisations)
-
+      
          file.write(f"{etudiant.matricule};{etudiant.nom};{etudiant.prenom};{etudiant.age};{etudiant.filiere};{etudiant.niveau};{';'.join(map(str, etudiant.cotisations))}\n")
+
+#fonction verificantion du matricule
+def matricule_existe(matricule):
+   with open("etudiants.txt", "r") as file:
+        lignes = file.readlines()
+        for ligne in lignes:
+            etudiant_data = lignes.strip().split(";")
+            if etudiant_data[0] == matricule:
+                return True
+   return False
 
 
 # Ajouter un étudiant au fichier etudiants.txt
 def ajouter():
+    matricule = input("Matricule : ")
+    if matricule_existe(matricule):
+        print("ce matricule existe deja.veillez entrer un matricule correcte")
+        return
     saisir()
+    
 
 
 # Modifier les données d'un étudiant existant dans le fichier connaissant son matricules
@@ -41,9 +62,23 @@ def modifier(matricule):
         for ligne in lignes:
             etudiant_data = ligne.strip().split(";")
             if etudiant_data[0] == matricule:
-                saisir()
-            else:
-                file.write(ligne)
+                #ici nous allons demander des modification specifiques
+                print("que voulez-vous modifier ?")
+                print("1. Nom")
+                print("2. Prenom")
+
+                choix = input("choisissez l'option : ")
+                if choix == "1":
+                    etudiant_data[1] = input("Nouveau nom : ")
+                elif choix == "2":
+                    etudiant_data[2] = input("Nouveau prenom : ")
+                else:
+                    print("option invalide.. Aucune modification effectuer") 
+                ligne = ";".join(etudiant_data) + "\n"
+
+            file.write(ligne)
+            
+         
 
 
 # Supprimer un étudiant par matricule
